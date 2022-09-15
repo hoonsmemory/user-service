@@ -1,9 +1,14 @@
 package me.hoon.userservice.service;
 
-import me.hoon.userservice.domain.dto.UserDto;
-import me.hoon.userservice.domain.vo.ResponseUser;
+import me.hoon.userservice.domain.dto.UserRequestDto;
+import me.hoon.userservice.domain.dto.UserResponseDto;
+
+import java.util.List;
 
 public interface UserService {
 
-    ResponseUser createUser(UserDto userDto);
+    UserResponseDto createUser(UserRequestDto userRequestDto);
+    UserResponseDto getUserByUserId(String userId);
+    List<UserResponseDto> getUserByAll();
+
 }

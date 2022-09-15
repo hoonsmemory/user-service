@@ -1,23 +1,16 @@
 package me.hoon.userservice.domain.dto;
 
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
-import java.util.Date;
 import java.util.List;
 
-@Builder
 @Data
-public class UserDto {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class UserResponseDto {
     private String email;
     private String name;
-    private String pwd;
     private String userId;
-    private Date createdAt;
-
-    private String decryptedPwd;
-
-    private String encryptedPwd;
 
     private List<OrderResponseDto> orders;
 }
