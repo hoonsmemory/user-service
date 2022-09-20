@@ -20,8 +20,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.authorizeRequests().antMatchers("/users/**").permitAll();
+       // http.authorizeRequests().antMatchers("/users/**").permitAll();
+        http.authorizeRequests()
+                        .antMatchers("/**")
+                        .hasIpAddress("192.168.35.181")
+                        .and()
+                        .addFilter(authenticationFilter());
 
         http.headers().frameOptions().disable();
+    }
+
+    private AuthenticationFilter authenticationFilter() throws Exception {
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
+        authenticationFilter.setAuthenticationManager(authenticationManager());
+        return new AuthenticationFilter();
     }
 }
