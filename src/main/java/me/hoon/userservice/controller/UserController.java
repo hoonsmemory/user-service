@@ -17,7 +17,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/user-service")
+@RequestMapping("/users")
 @RestController
 public class UserController {
 
@@ -35,14 +35,14 @@ public class UserController {
         return env.getProperty("greeting.message");
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity getUser(@PathVariable(value = "userId") String userId) {
         UserResponseDto responseUser = userService.getUserByUserId(userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseUser);
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public ResponseEntity getUsers() {
 
         List<UserResponseDto> userByAll = userService.getUserByAll();
@@ -53,7 +53,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userByAll);
     }
 
-    @PostMapping("/users")
+    @PostMapping
     public ResponseEntity createUser(@RequestBody @Validated UserRequestDto userRequestDto,
                                      BindingResult bindingResult) {
 

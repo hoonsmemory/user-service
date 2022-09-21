@@ -6,7 +6,6 @@ import lombok.Data;
 import java.util.Date;
 import java.util.List;
 
-@Builder
 @Data
 public class UserDto {
     private String email;
