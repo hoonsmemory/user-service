@@ -3,6 +3,7 @@ package me.hoon.userservice.service.impl;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
+import me.hoon.userservice.domain.dto.OrderResponseDto;
 import me.hoon.userservice.domain.dto.UserDto;
 import me.hoon.userservice.domain.dto.UserRequestDto;
 import me.hoon.userservice.domain.dto.UserResponseDto;
@@ -10,10 +11,15 @@ import me.hoon.userservice.repository.UserRepository;
 import me.hoon.userservice.service.UserService;
 import me.hoon.userservice.domain.User;
 import org.modelmapper.ModelMapper;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +33,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+    private final Environment env;
+    private final RestTemplate restTemplate;
 
     @Override
     public UserResponseDto createUser(UserRequestDto userRequestDto) {
@@ -47,7 +55,17 @@ public class UserServiceImpl implements UserService {
 
         UserResponseDto userResponseDto = modelMapper.map(user, UserResponseDto.class);
 
-        //List
+        String orderUrl = String.format(env.getProperty("order_service.url"), userId);
+
+        //url, httpMethod, params, return
+        ResponseEntity<List<OrderResponseDto>> orderListResponse = restTemplate.exchange(orderUrl, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<OrderResponseDto>>() {
+
+                }
+        );
+
+        List<OrderResponseDto> orderList = orderListResponse.getBody();
+        userResponseDto.setOrders(orderList);
 
         return userResponseDto;
     }
