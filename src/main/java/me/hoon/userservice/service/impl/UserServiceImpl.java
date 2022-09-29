@@ -10,6 +10,7 @@ import me.hoon.userservice.domain.dto.UserResponseDto;
 import me.hoon.userservice.repository.UserRepository;
 import me.hoon.userservice.service.UserService;
 import me.hoon.userservice.domain.User;
+import me.hoon.userservice.service.client.OrderServiceClient;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final Environment env;
     private final RestTemplate restTemplate;
+    private final OrderServiceClient orderServiceClient;
 
     @Override
     public UserResponseDto createUser(UserRequestDto userRequestDto) {
@@ -58,13 +60,15 @@ public class UserServiceImpl implements UserService {
         String orderUrl = String.format(env.getProperty("order_service.url"), userId);
 
         //url, httpMethod, params, return
-        ResponseEntity<List<OrderResponseDto>> orderListResponse = restTemplate.exchange(orderUrl, HttpMethod.GET, null,
+
+        /*ResponseEntity<List<OrderResponseDto>> orderListResponse = restTemplate.exchange(orderUrl, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<OrderResponseDto>>() {
 
                 }
         );
 
-        List<OrderResponseDto> orderList = orderListResponse.getBody();
+        List<OrderResponseDto> orderList = orderListResponse.getBody();*/
+        List<OrderResponseDto> orderList = orderServiceClient.getOrderByUserId(userId);
         userResponseDto.setOrders(orderList);
 
         return userResponseDto;
