@@ -32,3 +32,8 @@ management:
     web:
       exposure:
         include: refresh, health, beans, info, busrefresh
+
+#FeignClient 로그
+logging:
+  level:
+    com.example.userservice.client: DEBUG
