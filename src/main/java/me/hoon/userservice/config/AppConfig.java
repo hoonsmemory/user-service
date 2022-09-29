@@ -1,5 +1,7 @@
 package me.hoon.userservice.config;
 
+import feign.Logger;
+import me.hoon.userservice.exception.errordecoder.FeignErrorDecoder;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -21,5 +23,15 @@ public class AppConfig {
     @LoadBalanced // ip --> Microservice name
     public RestTemplate restTemplate() {
         return new RestTemplate();
+    }
+
+    @Bean
+    public Logger.Level feignLoggerLevel() {
+        return Logger.Level.FULL;
+    }
+
+    @Bean
+    public FeignErrorDecoder feignErrorDecoder() {
+        return new FeignErrorDecoder();
     }
 }
