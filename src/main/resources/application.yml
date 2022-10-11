@@ -13,7 +13,14 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-      #show-sql: true # DDL ??
+  #zipkin
+  zipkin:
+    base-url: http://127.0.0.1:9411
+    enable : true
+  sleuth:
+    sampler:
+      probability: 1.0
+
 
 eureka:
   client:
