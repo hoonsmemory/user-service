@@ -38,7 +38,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans, info, busrefresh
+        include: refresh, health, beans, info, busrefresh, metrics, prometheus
 
 #FeignClient 로그
 logging:
